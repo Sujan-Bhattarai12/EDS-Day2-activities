@@ -1,7 +1,65 @@
 ---
 title: "part2"
 format: html
+execute:
+    warning: FALSE
 editor: visual
 ---
 
-## 
+```{r}
+library(tidyverse)
+library(here)
+library(janitor)
+```
+
+```{r}
+mack_verts <- read_csv(here('data', 'AS00601_v9.csv' )) %>% 
+  clean_names()
+
+```
+
+**Index the dataframes**
+
+```{r}
+mc_wt_5 <- mack_verts$weight[5]
+mc_wt_5
+```
+
+```{r}
+mc_length_8_20 <- mack_verts$length1[8:20]
+
+##store everything as vector
+
+mc_dates <- as.vector(mack_verts$sampledate)
+```
+
+#### Make a salamandar dataset
+
+```{r}
+mc_salamanders <- mack_verts %>% 
+  filter(species=="DITE") %>% 
+  ggplot(aes(length2, weight))+
+  geom_point(aes(color= year ))+
+  xlab("Snout lenth of the salamaner")+
+  ylab("weight of the salamander")
+
+mc_salamanders
+ggsave("salamander_size.png", path = here("figs"))
+```
+
+Cuttthroat plot
+
+```{r}
+ mack_verts %>% 
+  filter(species=="ONCL") %>% 
+   ggplot(aes(length2, weight))+
+  geom_point(aes(color=year))+
+  facet_wrap(~reach)
+
+ ggsave("cutthroat_size.png", path=here("figs"))
+
+```
+
+```{r}
+
+```
